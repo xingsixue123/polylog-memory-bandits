@@ -1,0 +1,20 @@
+name = "PolylogMemoryBandits"
+defaultTargets = ["Pool", "Checks"]
+
+[leanOptions]
+autoImplicit = false
+relaxedAutoImplicit = false
+
+# Mathlib at tag v4.36.0-rc2 (commit 9d581df), the version the proof was checked with.
+[[require]]
+name = "mathlib"
+git = "https://github.com/leanprover-community/mathlib4"
+rev = "9d581dfff2e41de989072ea63abf3daf69311520"
+
+# The proof. `Pool.lean` imports every module; the main theorem is `Pool.P0294.main`.
+[[lean_lib]]
+name = "Pool"
+
+# Independent checks of the statement and of the caveats (see README).
+[[lean_lib]]
+name = "Checks"
