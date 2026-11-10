@@ -40,6 +40,28 @@ and keeps only **polylog(nT) bits of memory**. Against oblivious adversaries it 
   The axioms used are `propext`, `Classical.choice` and `Quot.sound` only. There is no `sorry` and no
   `native_decide`.
 
+## Disclosure
+
+- **Everything in this repository was produced by AI.** This includes:
+  - the Lean proof (`Pool/`), the checks (`Checks/`) and the checker (`check/Check.lean`, `scripts/verify.sh`);
+  - `docs/PROOF_OUTLINE.md`;
+  - this README, including the problem statement in §1 and the comparison with prior work.
+- **What humans did.** Humans chose the problem and decided to release the result. No human wrote any of the Lean
+  code. No human has checked the proof, the formal model, or the claims in this README.
+- **The only checking is by machine:** the Lean kernel, a kernel replay of every module, and an axiom walk (§3).
+  This is not a paper and has not been peer-reviewed.
+- **The literature comparison may be incomplete.** The comparison in §1 comes from a literature search done by AI in
+  November 2026. The search covered arXiv, citation databases and recent conference proceedings. It may have missed
+  related work, including concurrent work that is not public.
+- **What was changed before release.**
+  - The release keeps only the 230 modules that the main theorem depends on. The rest of a larger development was
+    left out.
+  - A dependency on a Lean library other than Mathlib was removed.
+  - 12 comment lines in 8 files were reworded or removed.
+
+  No Lean statement or proof in `Pool/` was changed. The release was checked again in full after these changes (§3).
+- **No endorsement.** The authors of the works cited in §1 were not involved in this work and have not reviewed it.
+
 ## 1. The problem
 
 **Setting.**
