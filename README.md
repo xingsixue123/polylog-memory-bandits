@@ -60,9 +60,13 @@ and keeps only **polylog(nT) bits of memory**. Against oblivious adversaries it 
   - 12 comment lines in 8 files were reworded or removed.
 
   No Lean statement or proof in `Pool/` was changed. The release was checked again in full after these changes (§3).
-- **No endorsement.** The authors of the works cited in §1 were not involved in this work and have not reviewed it.
+- **No endorsement.** The authors of the cited works were not involved in this work and have not reviewed it.
 
 ## 1. The problem
+
+This is the bandit version (one arm pulled and observed per round) of the experts problem with limited memory
+[3, 4, 5]. Braverman, Garg, Wang, Woodruff and Zhou studied it [1]. Below, the problem is stated in the form used by
+the Lean proof.
 
 **Setting.**
 - There are `n` arms and a horizon of `T` rounds, with `1 ≤ n ≤ T`.
@@ -88,7 +92,7 @@ persists outside the state.
 The expectation is over the learner's coins.
 
 **The question.** What regret can learners with polylog(nT) bits of memory achieve? Any learner, with any memory, has
-regret Ω(√(nT)) on some table. The target is to match this up to polylog factors.
+regret Ω(√(nT)) on some table [6]. The target is to match this up to polylog factors.
 
 The target holds if there are constants `C, k, C', k'` and, for every `1 ≤ n ≤ T`, a time-homogeneous machine
 `F(n, T)` such that:
@@ -107,14 +111,14 @@ Every probability is then a dyadic rational with denominator `2^b`. This is `Aud
 
 | Source | Pulls per round | Regret with polylog memory | Status |
 |---|---|---|---|
-| Braverman, Garg, Wang, Woodruff, Zhou, SODA 2026 (arXiv:2601.03533), Thm. 3 | 1 | n·T^{2/3}·polylog | published (vacuous once n ≥ T^{1/3}) |
-| Same paper, Thm. 1 | 2 (one extra free observation) | √(nT)·polylog | published |
-| Brukhim, Cesa-Bianchi, Ciliberto (arXiv:2603.00803), Thm. 17 | 1 | n^{1/3}·T^{2/3}·polylog (claimed) | preprint; the authors list √(nT) with polylog memory as open |
-| Classical lower bound | any | Ω(√(nT)) for any memory | |
+| Braverman, Garg, Wang, Woodruff, Zhou [1], Thm. 3 | 1 | n·T^{2/3}·polylog | published (vacuous once n ≥ T^{1/3}) |
+| Same paper [1], Thm. 1 | 2 (one extra free observation) | √(nT)·polylog | published |
+| Brukhim, Cesa-Bianchi, Ciliberto [2], Thm. 17 | 1 | n^{1/3}·T^{2/3}·polylog (claimed) | preprint; the authors list √(nT) with polylog memory as open |
+| Classical lower bound, Auer, Cesa-Bianchi, Freund, Schapire [6] | any | Ω(√(nT)) for any memory | |
 | **This repository** | **1** | **√(nT)·polylog, for all 1 ≤ n ≤ T** | Lean proof, see the caveats above |
 
 In words: with a single pull per round and polylog memory, there is no polynomial regret penalty. The extra free
-observation used by the √(nT) bound of Braverman et al. is not needed.
+observation used by the √(nT) bound of Braverman et al. [1] is not needed.
 
 ## 2. The formal statements
 
@@ -194,7 +198,7 @@ The main line of the argument:
 | `P0001` | the model and the target statement |
 | `P0055`, `P0067` | subsampled play: run a learner on a random fraction of the rounds |
 | `P0161`, `P0173` | reduction: the target follows from one "boosting step" applied recursively, at a fixed rate q = 1/polylog |
-| `P0201`, `P0284` | the one-level machine: Peng–Rubinstein-style threaded pools of candidate arms, probed at thread-dependent rates, evicted against an independent base learner, with a sleeping-experts Hedge over the pool |
+| `P0201`, `P0284` | the one-level machine: threaded pools of candidate arms in the style of Peng and Rubinstein [3], probed at thread-dependent rates, evicted against an independent base learner, with a sleeping-experts Hedge over the pool |
 | `P0278`, `P0292` | the regret of one level in terms of the base learner's regret on a subsample |
 | `P0294` | the last estimate (the probing remainder) and the main theorem |
 
@@ -214,6 +218,21 @@ Lean statements are authoritative.
 | `docs/PROOF_OUTLINE.md` | algorithm and proof outline |
 | `lakefile.toml`, `lake-manifest.json`, `lean-toolchain` | pinned Lean and Mathlib versions |
 | `LICENSE` | Apache License 2.0 |
+
+## References
+
+- **[1]** Vladimir Braverman, Sumegha Garg, Chen Wang, David P. Woodruff, Samson Zhou. *Online Learning with Limited
+  Information in the Sliding Window Model.* SODA 2026. [arXiv:2601.03533](https://arxiv.org/abs/2601.03533).
+- **[2]** Nataly Brukhim, Nicolò Cesa-Bianchi, Carlo Ciliberto. *Lookahead Identification in Adversarial Bandits:
+  Accuracy and Memory Bounds.* Preprint, 2026. [arXiv:2603.00803](https://arxiv.org/abs/2603.00803).
+- **[3]** Binghui Peng, Aviad Rubinstein. *Near Optimal Memory-Regret Tradeoff for Online Learning.* FOCS 2023.
+  [arXiv:2303.01673](https://arxiv.org/abs/2303.01673).
+- **[4]** Vaidehi Srinivas, David P. Woodruff, Ziyu Xu, Samson Zhou. *Memory Bounds for the Experts Problem.* STOC 2022.
+  [arXiv:2204.09837](https://arxiv.org/abs/2204.09837).
+- **[5]** Binghui Peng, Fred Zhang. *Online Prediction in Sub-linear Space.* SODA 2023.
+  [arXiv:2207.07974](https://arxiv.org/abs/2207.07974).
+- **[6]** Peter Auer, Nicolò Cesa-Bianchi, Yoav Freund, Robert E. Schapire. *The Nonstochastic Multiarmed Bandit
+  Problem.* SIAM Journal on Computing 32(1):48–77, 2002.
 
 ## License
 
